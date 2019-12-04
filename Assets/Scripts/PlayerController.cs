@@ -5,10 +5,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Animator Players;
+    BulletContainer Bullets;
+    public GameObject Stone;
+    public Transform StoneSpawner;
+    public float speed;
     // Start is called before the first frame update
     void Start()
     {
+        speed = 10f;
         Players=this.gameObject.GetComponent<Animator>();
+        Bullets = BulletContainer.Instance;
     }
 
     // Update is called once per frame
@@ -63,17 +69,33 @@ public class PlayerController : MonoBehaviour
         {
             Players.SetBool("Jump", false);
         }
-        if (Input.GetKey(KeyCode.Mouse0) && (Players.GetBool("Walking") == true || Players.GetBool("Running") == true))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && (Players.GetBool("Walking") == true || Players.GetBool("Running") == true))
         {
             Players.SetBool("Throw", true);
+            // Invoke("throwObject", 1);
+            StartCoroutine(Throw());
         }
-       else if (Input.GetKey(KeyCode.Mouse0))
+       else if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Players.SetBool("Throw", true);
+            // Invoke("throwObject", 1);
+            StartCoroutine(Throw());
         }
         else
         {
             Players.SetBool("Throw", false);
         }
     }
+    public IEnumerator Throw()
+    {
+        yield return new WaitForSeconds(.75f);
+        var ThrowObj=Instantiate(Stone, StoneSpawner.position, transform.rotation);
+        ThrowObj.GetComponent<Rigidbody>().velocity = transform.forward * speed;
+
+    }
+    public void throwObject()
+    {
+        Bullets.SpawnFromPool("Bullet",StoneSpawner.transform.position ,transform.position, Quaternion.identity);
+    }
+
 }
