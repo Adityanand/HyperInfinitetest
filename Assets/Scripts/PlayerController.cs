@@ -1,0 +1,79 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    Animator Players;
+    // Start is called before the first frame update
+    void Start()
+    {
+        Players=this.gameObject.GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        {
+            Players.SetBool("Running", true);
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            Players.SetBool("Walking",true);
+        }
+        else
+        {
+            Players.SetBool("Running", false);
+            Players.SetBool("Walking", false);
+        }
+        if(Input.GetKey(KeyCode.A)&& (Players.GetBool("Walking")== true||Players.GetBool("Running") == true))
+        {
+            transform.Rotate(Vector3.down * 25f * Time.deltaTime);
+        }
+        else if(Input.GetKey(KeyCode.A))
+        {
+            Players.SetBool("Left", true);
+        }
+        else
+        {
+            Players.SetBool("Left", false);
+        }
+        if (Input.GetKey(KeyCode.D) && (Players.GetBool("Walking") == true||Players.GetBool("Running") == true))
+        {
+            transform.Rotate(Vector3.up * 25f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            Players.SetBool("Right", true);
+        }
+        else
+        {
+            Players.SetBool("Right", false);
+        }
+        if (Input.GetKey(KeyCode.Space) && (Players.GetBool("Walking") == true ||Players.GetBool("Running") == true))
+        {
+            Players.SetBool("Jump", true);
+        }
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            Players.SetBool("Jump", true);
+        }
+        else
+        {
+            Players.SetBool("Jump", false);
+        }
+        if (Input.GetKey(KeyCode.Mouse0) && (Players.GetBool("Walking") == true || Players.GetBool("Running") == true))
+        {
+            Players.SetBool("Throw", true);
+        }
+       else if (Input.GetKey(KeyCode.Mouse0))
+        {
+            Players.SetBool("Throw", true);
+        }
+        else
+        {
+            Players.SetBool("Throw", false);
+        }
+    }
+}
