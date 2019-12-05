@@ -96,7 +96,7 @@ public class AIEnemy : MonoBehaviour
     private void FixedUpdate()
     {
         Sensor();
-        if (Vector3.Distance(Player.transform.position, transform.position) > 5f)
+        if (Vector3.Distance(Player.transform.position, transform.position) > 5f && Player!=null)
         {
             this.transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, 0f * Time.deltaTime);
             Enemy.SetBool("Walking", true);
@@ -131,7 +131,7 @@ public class AIEnemy : MonoBehaviour
     public IEnumerator Kill()
     {
         Enemy.SetBool("Dying", true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         Destroy(this.gameObject);
     }
 }

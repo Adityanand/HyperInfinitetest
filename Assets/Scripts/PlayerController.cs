@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public Transform StoneSpawner;
     public float speed;
     public int Health;
+    public Canvas GameOver;
     // Start is called before the first frame update
     void Start()
     {
@@ -114,7 +116,9 @@ public class PlayerController : MonoBehaviour
         {
             this.GetComponent<Animator>().SetBool("Dying", true);
             yield return new WaitForSeconds(5);
+            GameOver.enabled = true;
             Destroy(this.gameObject);
+           
         }
     }
 }
