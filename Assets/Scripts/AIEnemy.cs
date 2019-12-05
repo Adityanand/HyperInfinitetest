@@ -102,7 +102,7 @@ public class AIEnemy : MonoBehaviour
             Enemy.SetBool("Walking", true);
             
         }
-        else if(Vector3.Distance(Player.transform.position, transform.position) <= 2f)
+        else if(Vector3.Distance(Player.transform.position, transform.position) <= 4f)
         {
             time = time - 1 * Time.deltaTime;
             transform.LookAt(Player.transform);
@@ -124,6 +124,7 @@ public class AIEnemy : MonoBehaviour
     {
         if(collision.collider.tag=="Bullet")
         {
+            Debug.Log("hello");
             StartCoroutine(Kill());
         }
     }

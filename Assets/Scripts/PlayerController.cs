@@ -9,12 +9,14 @@ public class PlayerController : MonoBehaviour
     public GameObject Stone;
     public Transform StoneSpawner;
     public float speed;
+    public int Health;
     // Start is called before the first frame update
     void Start()
     {
         speed = 10f;
         Players=this.gameObject.GetComponent<Animator>();
         Bullets = BulletContainer.Instance;
+        Health = 100;
     }
 
     // Update is called once per frame
@@ -97,5 +99,22 @@ public class PlayerController : MonoBehaviour
     {
         Bullets.SpawnFromPool("Bullet",StoneSpawner.transform.position ,transform.position, Quaternion.identity);
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag =="Bullet")
+        {
+            Debug.Log("Hello");
+            Health = Health - 20;
+            StartCoroutine(Kill());
+        }
+    }
+    IEnumerator Kill()
+    {
+        if(Health<=0)
+        {
+            this.GetComponent<Animator>().SetBool("Dying", true);
+            yield return new WaitForSeconds(5);
+            Destroy(this.gameObject);
+        }
+    }
 }
