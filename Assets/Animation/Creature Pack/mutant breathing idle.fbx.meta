@@ -1,52 +1,12 @@
 fileFormatVersion: 2
-guid: e6c049e5727c792419cfa1e62cab4b52
+guid: 825bf1b0313f07d43918dd3414c701c2
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
   - first:
       74: -203655887218126122
     second: mixamo.com
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: emireh_body_material
-    second: {fileID: 2100000, guid: d42b1853019b70840b0e67d9d8b09e51, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: emireh_shoe_material
-    second: {fileID: 2100000, guid: 79718af78b5defe4790a55bb0385bc91, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: mremireh_body__diffuse
-    second: {fileID: 2800000, guid: 976160cd390ec8b43b0001a5e6a1d012, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: mremireh_body_normal
-    second: {fileID: 2800000, guid: 59510a58b0353da4492280a2062c7908, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: mremireh_body_specular
-    second: {fileID: 2800000, guid: 9024f3437e85c4041af4e9d1b600f959, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: mremireh_shoe_diffuse
-    second: {fileID: 2800000, guid: 5c892f07def5e13408fe6504d60f0758, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: mremireh_shoe_normal
-    second: {fileID: 2800000, guid: da70bf90a3d92f74f8945cc2970d7e06, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: mremireh_shoe_specular
-    second: {fileID: 2800000, guid: d343ee8eb8b2e2c4a934c37158d38d9b, type: 3}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
@@ -73,7 +33,36 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: mixamo.com
+      takeName: mixamo.com
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 241
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
