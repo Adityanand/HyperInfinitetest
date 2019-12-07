@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class AIEnemy : MonoBehaviour
+public class PlayerAI : MonoBehaviour
 {
-    [Header("Enemy")]
-    public Animator Enemy;
-
+    Animator Player;
+    public GameObject Enemy;
+    public int Health;
+    public Text HealthRemain;
+    public Canvas GameOver;
     [Header("Sensor")]
-    public float SensorLength;
+    public float SensorLenght;
     public Vector3 FrontSensorPos;
     public float SideSensorPos;
     public float FrontSensorAngle;
-    public GameObject Player;
     [Header("Throw")]
     public GameObject Stone;
     public Transform StoneSpawner;
@@ -22,13 +24,14 @@ public class AIEnemy : MonoBehaviour
     void Start()
     {
         FrontSensorPos = new Vector3(0, 1f, 0.25f);
-        SensorLength = .5f;
+        SensorLenght = .5f;
         SideSensorPos = .1f;
-        FrontSensorAngle =45;
-        Enemy = GetComponent<Animator>();
-        Player = GameObject.FindGameObjectWithTag("Player");
+        FrontSensorAngle = 30;
+        Player = GetComponent<Animator>();
         speed = 10f;
-        time = 3f;
+        time = 2f;
+        Health = 100;
+        HealthRemain.text = Health.ToString();
     }
     void Sensor()
     {
@@ -36,50 +39,49 @@ public class AIEnemy : MonoBehaviour
         Vector3 SensorStartingPos = transform.position;
         SensorStartingPos += transform.forward * FrontSensorPos.z;
         SensorStartingPos += transform.up * FrontSensorPos.y;
-
-
-
         //front Right Sensor Position
         SensorStartingPos += transform.right * SideSensorPos;
-        if (Physics.Raycast(SensorStartingPos, transform.forward, out hit, SensorLength))
+        if (Physics.Raycast(SensorStartingPos, transform.forward, out hit, SensorLenght))
         {
             if (!hit.collider.CompareTag("Ground"))
             {
                 Debug.DrawLine(SensorStartingPos, hit.point);
-               // Enemy.SetBool("Left", true);
+                // Enemy.SetBool("Left", true);
                 this.transform.Rotate(-Vector3.up * 45f);
             }
         }
 
         //front Right Angled Sensor Position
-        else if (Physics.Raycast(SensorStartingPos, Quaternion.AngleAxis(FrontSensorAngle, transform.up) * transform.forward, out hit, SensorLength))
+        else if (Physics.Raycast(SensorStartingPos, Quaternion.AngleAxis(FrontSensorAngle, transform.up) * transform.forward, out hit,SensorLenght))
         {
             if (!hit.collider.CompareTag("Ground"))
             {
                 Debug.DrawLine(SensorStartingPos, hit.point);
-               // Enemy.SetBool("Left", true);
+                // Enemy.SetBool("Left", true);
                 this.transform.Rotate(-Vector3.up * 45f);
             }
         }
         else
         {
-            Enemy.SetBool("Left", false);
+            Player.SetBool("Left", false);
+            Player.SetBool("Walking", true);
+            this.transform.LookAt(Enemy.transform);
         }
 
         //front Left Sensor Position
         SensorStartingPos -= 2 * transform.right * SideSensorPos;
-        if (Physics.Raycast(SensorStartingPos, transform.forward, out hit, SensorLength))
+        if (Physics.Raycast(SensorStartingPos, transform.forward, out hit, SensorLenght))
         {
             if (!hit.collider.CompareTag("Ground"))
             {
                 Debug.DrawLine(SensorStartingPos, hit.point);
-               // Enemy.SetBool("Right", true);
+                // Enemy.SetBool("Right", true);
                 this.transform.Rotate(Vector3.up * 45f);
             }
         }
 
         //front Left Angled Sensor Position
-        else if (Physics.Raycast(SensorStartingPos, Quaternion.AngleAxis(-FrontSensorAngle, transform.up) * transform.forward, out hit, SensorLength))
+        else if (Physics.Raycast(SensorStartingPos, Quaternion.AngleAxis(-FrontSensorAngle, transform.up) * transform.forward, out hit, SensorLenght))
         {
             if (!hit.collider.CompareTag("Ground"))
             {
@@ -90,54 +92,57 @@ public class AIEnemy : MonoBehaviour
         }
         else
         {
-            Enemy.SetBool("Right", false);
+            Player.SetBool("Right", false);
+            this.transform.LookAt(Enemy.transform);
+            Player.SetBool("Walking", true);
+
         }
     }
     // Update is called once per frame
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        Sensor();
-        if ((Player != null)&&(Vector3.Distance(Player.transform.position, transform.position) > 5f))
-        {
-            this.transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, 0f * Time.deltaTime);
-            Enemy.SetBool("Walking", true);
-            
-        }
-        else if((Player != null) && (Vector3.Distance(Player.transform.position, transform.position) <= 4f)&&(Enemy.GetBool("Dying")==false))
+        HealthRemain.text = Health.ToString();
+        Enemy = GameObject.FindGameObjectWithTag("Enemy");
+        if (Enemy == null)
+            Health = 100;
+        if ((Enemy != null) && (Vector3.Distance(Enemy.transform.position, transform.position) <= 4f))
         {
             time = time - 1 * Time.deltaTime;
-            transform.LookAt(Player.transform);
-            Enemy.SetBool("Walking", false);
-            if(time<=0)
+            transform.LookAt(Enemy.transform);
+            Player.SetBool("Walking", false);
+            if (time <= 0)
             {
-                Enemy.SetBool("StoneThrow", true);
+                Player.SetBool("Throw", true);
                 var ThrowObj = Instantiate(Stone, StoneSpawner.position, transform.rotation);
                 ThrowObj.GetComponent<Rigidbody>().velocity = transform.forward * speed;
-                time = 3f;
+                time = 2f;
             }
-            else if(time>=2.8f)
+            else if (time >= 1.8f)
             {
-                Enemy.SetBool("StoneThrow", false);
+                Player.SetBool("Throw", false);
             }
         }
         else
-        {
-            this.transform.Translate(Vector3.forward * 0f * Time.deltaTime);
-            Enemy.SetBool("Walking", true);
-        }
+        Sensor();
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag=="Bullet")
+        if (collision.collider.tag == "Bullet")
         {
-            Debug.Log("hello");
+            Debug.Log("Hello");
+            Health = Health - 20;
             StartCoroutine(Kill());
         }
     }
-    public IEnumerator Kill()
+    IEnumerator Kill()
     {
-        Enemy.SetBool("Dying", true);
-        yield return new WaitForSeconds(5);
-        Destroy(this.gameObject);
+        if (Health <= 0)
+        {
+            this.GetComponent<Animator>().SetBool("Dying", true);
+            yield return new WaitForSeconds(5);
+            GameOver.enabled = true;
+            Destroy(this.gameObject);
+
+        }
     }
 }

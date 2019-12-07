@@ -13,8 +13,9 @@ public class EnemySpawner : MonoBehaviour
     }
     public IEnumerator EnemySpawn()
     {
-        Instantiate(Enemy, SpawnPosition[Random.Range(0, SpawnPosition.Length)].transform.position,Quaternion.identity);
-        yield return new WaitForSeconds(60);
-        StartCoroutine(EnemySpawn());
+        if(!GameObject.FindGameObjectWithTag("Enemy"))
+       Instantiate(Enemy, SpawnPosition[Random.Range(0, SpawnPosition.Length)].transform.position, Quaternion.identity);
+       yield return new WaitForSeconds(1);
+       StartCoroutine(EnemySpawn());
     }
 }
